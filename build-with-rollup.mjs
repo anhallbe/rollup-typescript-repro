@@ -33,7 +33,11 @@ for (const chunk of output.output) {
 
 await build.close();
 
-console.log("Waiting for 1 second...");
-await new Promise((resolve) => setTimeout(resolve, 1000));
+await sleep(1000);
 
 console.log("Done!");
+
+function sleep(ms = 1000) {
+  console.log(`Waiting for ${ms} milliseconds...`);
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
