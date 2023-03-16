@@ -1,12 +1,14 @@
 import typescriptPlugin from "@rollup/plugin-typescript";
 import { copyFile, mkdir, rm, stat } from "fs/promises";
+import { join } from "path";
 import { rollup } from "rollup";
 
-const TEMP_DIR = "tempDir";
+const TEMP_DIR =
+  "_temporary-directory-with-a-really-really-long-name-that-may-be-too-long-for-windows";
 
 await mkdir(TEMP_DIR);
-await copyFile("hello.ts", "tempDir/hello.ts");
-process.chdir("tempDir");
+await copyFile("hello.ts", join(TEMP_DIR, "hello.ts"));
+process.chdir(TEMP_DIR);
 
 const build = await rollup({
   input: "hello.ts",
