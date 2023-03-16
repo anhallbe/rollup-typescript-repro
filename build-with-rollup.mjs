@@ -1,5 +1,12 @@
 import typescriptPlugin from "@rollup/plugin-typescript";
+import { copyFile, mkdir, rm, stat } from "fs/promises";
 import { rollup } from "rollup";
+
+const TEMP_DIR = "tempDir";
+
+await mkdir(TEMP_DIR);
+await copyFile("hello.ts", "tempDir/hello.ts");
+process.chdir("tempDir");
 
 const build = await rollup({
   input: "hello.ts",
@@ -32,6 +39,13 @@ for (const chunk of output.output) {
 }
 
 await build.close();
+if ((await stat("hello.js")).isFile()) {
+  console.log("File exists!");
+} else {
+  console.error("ERROR: Output file was not created!");
+}
+process.chdir("../");
+await rm(TEMP_DIR, { recursive: true });
 
 await sleep(1000);
 
